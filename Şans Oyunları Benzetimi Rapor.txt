@@ -1,0 +1,482 @@
+					********KARÞILAÞILAN  HATALAR********
+					|-----------------------------------|
+____________________________________________________________________________________________________________	
+
+1-SIRALAMADA BAZEN GÝRÝLEN SAYIYI YOK EDÝP RANDOM SAYI ATANIYOR.+++
+2-ONNUMARA FONKSIYONU-TUTTURMA FONKSIYONU ARASI HATALAR OLUÞUYOR.++
+3-
+
+
+
+____________________________________________________________________________________________________________
+					*************GÜNCEL KODU*************
+					|-----------------------------------|		
+____________________________________________________________________________________________________________
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#include <time.h>
+#define temizle system("cls")
+
+int main();
+int anamenu();
+int sansoyunlari();
+int sayisalloto();
+int siralama(int [],int);
+void superlotoist(int tutandizi[][100]);
+
+//-------------------------MAIN FONKSIYONU-------------------------------| TAMAMLANDI
+int main()
+{
+    int secim;
+    temizle;
+printf("______________________________________________________________________________________________________\n");
+    printf("******Ana Menu*****\n1-Sans Oyunlari\n2-Cekilis Istatikleri\n3-Cikis\n------------------------------------------------------\nLutfen yapmak istediginiz islem numaranizi tuslayiniz:");
+    scanf("%d",&secim); printf("------------------------------------------------------\n");
+    if      (secim<1||secim>3) {printf("\t\t------------Lutfen Gecerli Bir Islem Numarasi Giriniz!------------\n\n"); return main();}
+    else     anamenu(secim);
+
+    return 0;
+}
+//-------------------------ANEMENU FONKSIYONU----------------------------| ISTATISTIK FONKSIYONU YAPILACAK
+int anamenu(int anamenusecim)
+{
+    switch(anamenusecim)
+    {
+        case 1: sansoyunlari(); break;
+        case 2: /*istatistikler;()*/ break;
+        case 3: printf("Cikmak istediginize emin misiniz(1=Evet/2=Hayir)?:\t"); scanf("%d",&anamenusecim); printf("\n");
+        if(anamenusecim==1) {break;}
+        else if(anamenusecim==2) {return main();}
+    }
+}
+//-------------------------SANS OYUNLARI FONKSIYONU-----------------------| TAMAMLANDI
+int sansoyunlari()
+{
+    int secim2;
+    temizle;
+    printf("______________________________________________________________________________________________________\n");
+    etiket1:
+    printf("*****Sans Oyunlari*****\n1-Sayisal Loto Oynama\n2-Sans Topu Oynama\n3-On Numara Oynama\n4-Super Loto Oynama\n5-Ana Menu\n------------------------------------------------------\nLutfen yapmak istediginiz islem numaranizi tuslayiniz:");
+    scanf("%d",&secim2);
+    printf("-------------------------------------------------------\n");
+    if (secim2<1 || secim2>5) {printf("\t\t------------Lutfen Gecerli Bir Islem Numarasi Giriniz!------------\n\n"); goto etiket1;}
+            switch(secim2)
+            {
+                case 1: sayisalloto();              /*Sayysal Loto  */ break;
+                case 2: sanstopu();                 /*Sans Topu     */ break;
+                case 3: onnumara();                 /*On Numara     */ break;
+                case 4: superloto();                /*Süper Loto    */ break;
+                case 5: return main();              /*Ana Menu      */ break;
+            }
+
+}
+//-------------------------SAYISAL LOTO FONKSIYONU------------------------| PUAN DEPOLAMA EKLENECEK++++++++++++++++
+int sayisalloto()
+{
+ int rastgele[6],i,j;
+ int sayisallotoo[6];
+ static int a=0;
+ static int x=0;
+ temizle;
+ printf("______________________________________________________________________________________________________\n");
+    printf("^^^^^Sayisal Loto Oyununa Hosgeldiniz^^^^\n\n-------------------------------------------------------\nOyunun Kurallari: Kullanici yeni bir oyun icin [1-49] araliginda 6 farkly sayi girmelidir.\n");
+    printf("Girilen sayilar ile bilgisayarin olusturdugu sayilar karsilastirilip tutan sayiya gore puan kazanacaktir.\n");
+    printf("-------------------------------------------------------\n\n");
+        srand(time(NULL));
+        for(i=0;i<6;i++)
+    {
+        etiket2:
+    printf("Lutfen 1-49 Araligindaki %d. Sayiyi Giriniz:",i+1);
+    scanf("%d",&sayisallotoo[i]);
+    if (sayisallotoo[i]<1 || sayisallotoo[i]>49) {goto etiket2;}
+    rastgele[i]=1+rand()%49;
+    for (j=i-1;j>=0;j--) {
+        if (sayisallotoo[i]==sayisallotoo[j]) {printf("\nLutfen Farkli Bir Sayi Giriniz\n\n"); goto etiket2;}
+    }
+    }
+siralama(sayisallotoo,6);
+siralama(rastgele,6);
+printf("-------------------------------------------------------\n");
+printf("\t\tSayisal Loto Sonuclari:\n\n");
+for (i=0;i<6;i++)   {   printf("%4d",sayisallotoo[i]); }printf("--->Senin Secimlerin\n");
+for (i=0;i<6;i++)   {   printf("%4d",rastgele[i]);     }printf("--->Bilgisayar Secimleri");
+//Karsilastirma Kismi
+
+int sayac=0;
+
+for (i=0;i<6;i++){
+    for (j=0;j<6;j++){
+        if (sayisallotoo[i]==rastgele[j]) {
+            sayac++;
+        }
+    }
+}
+// Puanlama
+int puanver=0;
+
+    if      (sayac==3) {puanver=32;}
+    else if (sayac==4) {puanver=62;}
+    else if (sayac==5) {puanver=128;}
+    else if (sayac==6) {puanver=256;}
+//_____________________________________________________
+printf("\n\n");
+printf("%d Adet sayi tutturdunuz.\n",sayac);
+//Toplam puan
+
+static int  totalpuan=0;
+        a++;
+    totalpuan=totalpuan+puanver;
+//________________
+printf("Bu oyundan kazandiginiz puan:%4d",puanver);
+//sprlotodepo(puanlayici,6,toplampuan);
+printf("\t\tSayisal Loto Oyunundan Simdiye Kadar Kazanilan Puan:%4d",totalpuan);
+printf("\n-------------------------------------------------------\n");
+int oynamak;
+    oyun1:
+printf("\n\nTekrar oynamak ister misiniz(Evet=1/Hayir=2)?:\t"); scanf("%d",&oynamak);
+if (oynamak==1) {sayisalloto();}
+else if (oynamak==2) {sansoyunlari();}
+else {printf("\n\t\t------------Lutfen Gecerli Bir Islem Numarasi Giriniz!------------\n\n"); goto oyun1;}
+ return 0;
+}
+//-------------------------SANS TOPU FONKSIYONU---------------------------| PUAN DEPOLAMA EKLENECEK++++++++++++++++
+int sanstopu()
+{
+ int rastgele2[6],i,j;
+ int sanstopu[6];
+ static int x=0;
+ static int a=0;
+ temizle;
+ printf("______________________________________________________________________________________________________\n");
+    printf("^^^^^Sans Topu Oyununa Hosgeldiniz^^^^\n\n-------------------------------------------------------\nOyunun Kurallari: Kullanici yeni bir oyun icin [1-34] araliginda 5 farkly sayi, [1-14] araliginda 1 sayi girmelidir.\n");
+    printf("Girilen sayilar ile bilgisayarin olusturdugu sayilar karsilastirilip tutan sayiya gore puan kazanacaktir.\n");
+    printf("-------------------------------------------------------\n\n");
+        srand(time(NULL));
+        for(i=0;i<5;i++)
+    {
+        etiket3:
+    printf("Lutfen 1-34 Araligindaki %d. Sayiyi Giriniz:",i+1);
+    scanf("%d",&sanstopu[i]);
+    if (sanstopu[i]<1 || sanstopu[i]>34) {goto etiket3;}
+    rastgele2[i]=1+rand()%34;
+    rastgele2[5]=1+rand()%14;
+    for (j=i-1;j>=0;j--) {
+        if (sanstopu[i]==sanstopu[j]) {printf("\nLutfen Farkli Bir Sayi Giriniz\n\n"); goto etiket3;}
+    }
+    }
+etiket4:
+    printf("Lutfen 1-14 Araliginda Bir Sayi Giriniz:"); scanf("%d",&sanstopu[5]);
+    if (sanstopu[5]<1 || sanstopu[5]>14) {goto etiket4;}
+siralama(sanstopu,6);
+siralama(rastgele2,6);
+printf("-------------------------------------------------------\n");
+printf("\t\tSans Topu Sonuclari:\n\n");
+for (i=0;i<6;i++)   {   printf("%4d",sanstopu[i]);     }printf("--->Senin Secimlerin\n");
+for (i=0;i<6;i++)   {   printf("%4d",rastgele2[i]);    }printf("--->Bilgisayar Secimleri");
+//Karsilastirma Kismi
+int sayac=0 ;
+int sayac2=0;
+for (i=0;i<5;i++){
+    for (j=0;j<5;j++){
+        if (sanstopu[i]==rastgele2[j]) {
+            sayac++;
+        }
+    }
+}
+if (sanstopu[5]==rastgele2[5]) {sayac2=1;}
+//______________________________________________
+int puanver=0;
+
+printf("\n\n");
+printf("%d Adet sayi tutturdunuz.\n",sayac+sayac2);
+//Puanlama
+
+     if (sayac==0)              {puanver=0  ;}
+else if (sayac==1&&sayac2==1)   {puanver=2  ;}
+else if (sayac==2&&sayac2==1)   {puanver=4  ;}
+else if (sayac==3&&sayac2==0)   {puanver=8  ;}
+else if (sayac==3&&sayac2==1)   {puanver=16 ;}
+else if (sayac==4&&sayac2==0)   {puanver=32 ;}
+else if (sayac==4&&sayac2==1)   {puanver=64 ;}
+else if (sayac==5&&sayac2==0)   {puanver=128;}
+else if (sayac==5&&sayac2==1)   {puanver=256;}
+else                            {puanver=0  ;}
+
+//_____________
+printf("Bu oyundan kazandiginiz puan:%4d",puanver);
+//Toplam puan
+
+static int  totalpuan=0;
+int         toplampuan[1000];
+        a++;
+
+    totalpuan=totalpuan+puanver;
+    toplampuan[a]=totalpuan;
+//________________
+//sprlotodepo(puanlama3(puan,sayac,sayac2),6,toplampuan);
+printf("\t\tSans topu oyunundan simdiye kazar kazandiginiz puan: %4d",totalpuan);
+printf("\n-------------------------------------------------------\n");
+int oynamak;
+oyun2:
+printf("\n\nTekrar oynamak ister misiniz(Evet=1/Hayir=2)?:\t"); scanf("%d",&oynamak);
+if (oynamak==1) {i=0;goto etiket3;}
+else if (oynamak==2) {sansoyunlari();}
+else {printf("\n\t\t------------Lutfen Gecerli Bir Islem Numarasi Giriniz!------------\n\n"); goto oyun2;}
+ return 0;
+}
+//-------------------------ON NUMARA FONKSIYONU---------------------------| PUAN DEPOLAMA EKLENECEK++++++++++++++++
+int onnumara()
+{
+int rastgele3[22],i,j;
+int onnumara[10];
+ static int x=0;
+ static int a=0;
+temizle;
+ printf("______________________________________________________________________________________________________\n");
+    printf("^^^^^Sayisal Loto Oyununa Hosgeldiniz^^^^\n\n-------------------------------------------------------\nOyunun Kurallari: Kullanici yeni bir oyun icin [1-80] araliginda 10 farkly sayi girmelidir.\n");
+    printf("Girilen sayilar ile bilgisayarin olusturdugu sayilar karsilastirilip tutan sayiya gore puan kazanacaktir.\n");
+    printf("-------------------------------------------------------\n\n");
+        srand(time(NULL));
+        for(i=0;i<10;i++)
+    {
+        etiket5:
+    printf("Lutfen 1-80 Araligindaki %d. Sayiyi Giriniz:",i+1);
+    scanf("%d",&onnumara[i]);
+    if (onnumara[i]<1 || onnumara[i]>80) {goto etiket5;}
+    for (j=i-1;j>=0;j--) {
+        if (onnumara[i]==onnumara[j]) {printf("\nLutfen Farkli Bir Sayi Giriniz\n\n"); goto etiket5;}
+    }
+    }
+        srand(time(NULL));
+        for(i=0;i<22;i++)
+    {
+            rastgele3[i]=1+rand()%80;
+    }
+
+
+siralama(onnumara,10);
+siralama(rastgele3,22);
+
+printf("-------------------------------------------------------\n");
+printf("\t\tOn Numara Sonuclari:\n\n");
+for (i=0;i<10;i++)   {   printf("%4d",onnumara[i],10);}  printf("\t\t\t\t\t\t\t--->Senin Secimlerin\n");
+for (i=0;i<22;i++)   {   printf("%4d",rastgele3[i],22);} printf("\t--->Bilgisayar Secimleri");
+//Karsilastirma Kismi
+
+int sayac=0;
+
+for (i=0;i<10;i++){
+    for (j=0;j<22;j++){
+        if (onnumara[i]==rastgele3[j]) {
+            sayac++;
+        }
+    }
+}
+//Puanlama
+int puanver=0;
+     if (sayac==0 ){puanver=8;  }
+else if (sayac==6 ){puanver=16; }
+else if (sayac==7 ){puanver=32; }
+else if (sayac==8 ){puanver=62; }
+else if (sayac==9 ){puanver=128;}
+else if (sayac==10){puanver=256;}
+//_____________________________________________________
+printf("\n\n");
+printf("%d Adet sayi tutturdunuz.\n",sayac);
+printf("Bu oyundan kazandiginiz puan:%4d",puanver);
+//Toplam puan
+
+static int  totalpuan=0;
+        a++;
+    totalpuan=totalpuan+puanver;
+
+//________________
+printf("\t\tSayisal Loto Oyunundan Simdiye Kadar Kazanilan Puan:%4d",totalpuan);
+printf("\n-------------------------------------------------------\n");
+int oynamak;
+    oyun3:
+printf("\n\nTekrar oynamak ister misiniz(Evet=1/Hayir=2)?:\t"); scanf("%d",&oynamak);
+if (oynamak==1) {i=0;goto etiket5;}
+else if (oynamak==2) {sansoyunlari();}
+else {printf("\n\t\t------------Lutfen Gecerli Bir Islem Numarasi Giriniz!------------\n\n"); goto oyun3;}
+
+ return 0;
+}
+//-------------------------SÜPER LOTO FONKSIYONU--------------------------| PUAN DEPOLAMA EKLENECEK++++++++++++++++
+int superloto()
+{
+ int rastgele4[6],i,j;
+ int superloto[6];
+ static int x=0;
+ static int a=0;
+ temizle;
+ printf("______________________________________________________________________________________________________\n");
+    printf("^^^^^Super Loto Oyununa Hosgeldiniz^^^^\n\n-------------------------------------------------------\nOyunun Kurallari: Kullanici yeni bir oyun icin [1-54] araliginda 6 farkly sayi girmelidir.\n");
+    printf("Girilen sayilar ile bilgisayarin olusturdugu sayilar karsilastirilip tutan sayiya gore puan kazanacaktir.\n");
+    printf("-------------------------------------------------------\n\n");
+        srand(time(NULL));
+        for(i=0;i<6;i++)
+    {
+        etiket6:
+    printf("Lutfen 1-54 Araligindaki %d. Sayiyi Giriniz:",i+1);
+    scanf("%d",&superloto[i]);
+    if (superloto[i]<1 || superloto[i]>54) {goto etiket6;}
+    rastgele4[i]=1+rand()%54;
+    for (j=i-1;j>=0;j--) {
+        if (superloto[i]==superloto[j]) {printf("\nLutfen Farkli Bir Sayi Giriniz\n\n"); goto etiket6;}
+    }
+    }
+    siralama(superloto,6);
+    siralama(rastgele4,6);
+printf("-------------------------------------------------------\n");
+printf("\t\tSuper Loto Sonuclari:\n\n");
+for (i=0;i<6;i++)   {   printf("%4d",superloto[i],6);     }printf("--->Senin Secimlerin\n");
+for (i=0;i<6;i++)   {   printf("%4d",rastgele4[i],6);     }printf("--->Bilgisayar Secimleri");
+//Karsilastirma Kismi
+int sayac=0;
+int tutandizi[1000][6];
+int gecicitutan[6];
+for (i=0;i<6;i++){
+    for (j=0;j<6;j++){
+        if (superloto[i]==rastgele4[j]) {
+            sayac++;
+            gecicitutan[i]=superloto[i];
+        }
+    }
+}
+
+x++;
+        for (i=0;i<6;i++) {
+        tutandizi[x][i]=gecicitutan[i];
+        }
+
+superlotoist(tutandizi);
+// Puanlama
+int puanver=0;
+
+    if      (sayac==3) {puanver=32;}
+    else if (sayac==4) {puanver=62;}
+    else if (sayac==5) {puanver=128;}
+    else if (sayac==6) {puanver=256;}
+
+//_____________________________________________________
+printf("\n\n");
+printf("%d Adet sayi tutturdunuz.\n",sayac);
+printf("Bu oyundan kazandiginiz puan:%4d",puanver);
+//Toplam puan
+
+static int  totalpuan=0;
+        a++;
+    totalpuan=totalpuan+puanver;
+//________________
+printf("\t\tSayisal Loto Oyunundan Simdiye Kadar Kazanilan Puan:%4d",totalpuan);
+
+printf("\n-------------------------------------------------------\n");
+int oynamak;
+    oyun4:
+printf("\n\nTekrar oynamak ister misiniz(Evet=1/Hayir=2)?:\t"); scanf("%d",&oynamak);
+if (oynamak==1) {i=0;goto etiket6;}
+else if (oynamak==2) {sansoyunlari();}
+else {printf("\n\t\t------------Lutfen Gecerli Bir Islem Numarasi Giriniz!------------\n\n"); goto oyun4;}
+ return 0;
+}
+
+//-------------------------SIRALAMA FONKSIYONU----------------------------| TAMAMLANDI
+int siralama(int sirala[],int uzunluk)
+{
+int i,j,gecici;
+  for (i=0; i<uzunluk-1; i++) {
+    for (j=0; j<uzunluk-1-i; j++)
+      if (sirala[j+1] < sirala[j]) {
+        gecici = sirala[j];
+        sirala[j] = sirala[j+1];
+        sirala[j+1] = gecici;
+    }
+  }
+
+}
+
+//-------------------------ISTATISTIK FONKSIYONU-------------------------| YAPILACAK
+int istatistik( )
+{
+     temizle;
+int secim;
+ist:
+printf("***Lutfen hangi oyunun istatistigini gormek istiyorsaniz seciniz***\n\t\t-----------------------\n1-Sayisal Loto\n2-Sans Topu\n3-On Numara\n4-Super Loto"); scanf("%d",secim);
+if (secim<1 || secim>4) {printf("\n\t\t------------Lutfen Gecerli Bir Islem Numarasi Giriniz!------------\n\n"); goto ist;}
+switch(secim)
+{
+    //case 1: sayisallotoist();   break;
+//    case 2; sanstopuist();      break;
+  //  case 4; superlotoist();     break;
+  //  case 3; onnumaraist();      break;
+}
+
+}
+//-------------------------EN COK CIKAN BULMA FONKSIYONU-----------------| YAPILACAK
+void superlotoist(int tutandizi[][100])
+{
+printf("\t\t***Super Loto Istatistikler***\n______________________________________________________________________________________________________\n");
+int i,j,m;
+int sayac[1000];
+int ayni[1000][100];
+
+for (i=0;1<1000;i++){
+    for (j=0;j<6;j++) {
+        if (tutandizi[i][j]==tutandizi[i+1][j]) {
+            sayac[i]=sayac[i]+1;
+            for (m=0;m<=sayac;m++)
+            ayni[i][m]=tutandizi[i][j];
+        }
+    }
+}
+
+
+
+printf("Sayi\t\tKac Kez Cikmis\n----\t\t --------------\n");
+for (i=0;i<1000;i++) {
+    for (j=0;sayac[i]<6;j++) {
+        printf("%4d\t\t%14d",ayni[i][j]);
+    }
+}
+
+
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+____________________________________________________________________________________________________________
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
